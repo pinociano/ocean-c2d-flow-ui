@@ -6,6 +6,9 @@
 # Usage: ./start_ocean.sh
 #
 
+# Mongo Configuration
+export MONGO_SCRIPTS="./scripts"
+
 IP="localhost"
 optspec=":-:"
 while getopts "$optspec" optchar; do
@@ -167,6 +170,8 @@ COMPOSE_FILES+=" -f ${COMPOSE_DIR}/provider.yml"
 COMPOSE_FILES+=" -f ${COMPOSE_DIR}/redis.yml"
 COMPOSE_FILES+=" -f ${COMPOSE_DIR}/ganache.yml"
 COMPOSE_FILES+=" -f ${COMPOSE_DIR}/ocean_contracts.yml"
+COMPOSE_FILES+=" -f ${COMPOSE_DIR}/mongo.yml"
+#COMPOSE_FILES+=" -f ${COMPOSE_DIR}/sanic.yml"
 
 DOCKER_COMPOSE_EXTRA_OPTS="${DOCKER_COMPOSE_EXTRA_OPTS:-}"
 

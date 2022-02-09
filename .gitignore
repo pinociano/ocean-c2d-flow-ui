@@ -17,3 +17,8 @@ ganache-db/
 
 # Barge logs
 start_ocean.log
+
+__pycache__/
+
+venv
+.vscode

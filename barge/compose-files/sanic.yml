@@ -1,0 +1,20 @@
+version: "3"
+services:  
+  c2d-flow:
+    container_name: c2d-flow
+    image: c2d-flow
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      backend:
+        ipv4_address: 172.15.0.40
+    depends_on:
+      - mongo1
+      - ganache
+    environment:
+      ADDRESS_FILE: "/ocean-contracts/artifacts/address.json"
+      OCEAN_NETWORK_URL: "http://172.15.0.3:8545"
+      METADATA_CACHE_URI: ${METADATA_CACHE_URI:-http://172.15.0.5:5000}
+    volumes:
+    - ${OCEAN_ARTIFACTS_FOLDER}:/ocean-contracts/artifacts/

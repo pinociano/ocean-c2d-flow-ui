@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "c2d-api"
+version = "0.1.0"
+description = "An Ocean Protocol C2D Flow"
+authors = ["Alessandro Mancini <dott.alessandro.mancini@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.10"
+wheel = "^0.37.1"
+numpy = "^1.22.2"
+ocean-lib = "^0.8.5"
+sanic = {version = "20.12.4", extras = ["ext"]}
+sanic-jwt = "^1.7.0"
+pymongo = "^3.12"
+motor = "^2.5.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

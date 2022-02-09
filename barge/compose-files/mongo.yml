@@ -1,0 +1,51 @@
+version: "3"
+services:  
+  mongo1:
+    container_name: mongo1
+    image: mongo
+    restart: always
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all"]
+    volumes:
+      - mongodata1:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      backend:
+        ipv4_address: 172.15.0.30
+
+  # mongo2:
+  #   container_name: mongo2
+  #   image: mongo
+  #   restart: always
+  #   entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+  #   volumes:
+  #     - mongodata2:/data/db
+  #   ports:
+  #     - 27018:27017
+
+  # mongo3:
+  #   container_name: mongo3
+  #   image: mongo
+  #   restart: always
+  #   entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+  #   volumes:
+  #     - mongodata3:/data/db
+  #   ports:
+  #     - 27019:27017
+
+  # mongoclient:
+  #   container_name: mongoclient
+  #   image: mongo
+  #   depends_on:
+  #     - mongo1
+  #     - mongo2
+  #     - mongo3
+  #   volumes:
+  #     - ${MONGO_SCRIPTS}:/scripts
+  #   entrypoint:
+  #     - /scripts/initiate_replica.sh
+
+volumes:
+  mongodata1:
+  mongodata2:
+  mongodata3:
