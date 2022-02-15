@@ -1,0 +1,16 @@
+{
+  "main": {
+    "type": "dataset",
+    "files": [
+      {
+        "url": "https://raw.githubusercontent.com/trentmc/branin/main/branin.arff",
+        "index": 0,
+        "contentType": "text/text"
+      }
+    ],
+    "name": "branin",
+    "author": "Trent",
+    "license": "CC0",
+    "dateCreated": "2019-12-28T10:55:11Z"
+  }
+}

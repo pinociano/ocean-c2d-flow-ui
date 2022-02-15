@@ -1,0 +1,14 @@
+version: "3"
+services:  
+  c2d-web:
+    build: ../app
+    container_name: c2d-web
+    image: sogei/c2d-web
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      backend:
+        ipv4_address: 172.15.0.36
+    depends_on:
+      - c2d-api

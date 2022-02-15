@@ -5,7 +5,7 @@ from sanic.log import logger
 class User:
 
     def __init__(self, id, username):
-        self.user_id = id
+        self.user_id = str(id)
         self.username = username
 
     def __repr__(self):
@@ -38,6 +38,7 @@ async def retrieve_user(request, payload, *args, **kwargs):
     if payload:
         user_id = payload.get('user_id', None)
         user = await app.ctx.users_dao.get_user_by_id(user_id)
+        user["_id"] = str(user["_id"]) 
         return user
     else:
         return None

@@ -11,11 +11,14 @@ class ComputeDao:
     def __init__(self):
         return
     
-    async def insert_compute(self, did, job_id, ordered):
+    async def insert_compute(self, data_asset, alg_asset, job_id, ordered):
 
         compute = {
             "_id": str(ObjectId()),
-            "did": did,
+            "data_did": data_asset["did"],
+            "data_name": data_asset["name"],
+            "alg_did": alg_asset["did"],
+            "alg_name": alg_asset["name"],
             "job_id": job_id,
             "ordered": ordered
         }
@@ -30,3 +33,10 @@ class ComputeDao:
         )
 
         return compute
+
+    async def get_compute_by_ordered(self, ordered):
+        compute = await Compute.find(
+            {"ordered": ordered}, as_raw=True
+        )
+
+        return compute.objects

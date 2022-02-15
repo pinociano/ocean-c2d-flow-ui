@@ -1,0 +1,21 @@
+version: "3"
+services:  
+  c2d-api:
+    build: ../api
+    container_name: c2d-api
+    image: sogei/c2d-api
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      backend:
+        ipv4_address: 172.15.0.35
+    depends_on:
+      - mongo1
+      - ganache
+    environment:
+      ADDRESS_FILE: "/ocean-contracts/artifacts/address.json"
+      OCEAN_NETWORK_URL: "http://ganache:8545"
+      METADATA_CACHE_URI: http://aquarius:5000
+    volumes:
+    - ${OCEAN_ARTIFACTS_FOLDER}:/ocean-contracts/artifacts/

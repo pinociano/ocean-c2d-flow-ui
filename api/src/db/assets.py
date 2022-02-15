@@ -14,12 +14,14 @@ class AssetDao:
     def __init__(self):
         return
     
-    async def insert_asset(self, did, publisher, type): 
+    async def insert_asset(self, did, publisher, name, type, description): 
 
         asset = {
             "_id": str(ObjectId()),
             "did": did,
             "type": type,
+            "name": name,
+            "description": description,
             "publisher": publisher,
             "buyers": []
         }
@@ -32,7 +34,7 @@ class AssetDao:
 
     async def add_trusted_algorithm_to_asset(self, did, alg):      
 
-        updated_asset = await Asset.update_one({"did": did}, { "$push": { "algorithms": alg } })
+        updated_asset = await Asset.update_one({"did": did}, { "$push": { "algorithms": {"did": alg["did"]} } })
 
         return updated_asset
 
@@ -50,10 +52,19 @@ class AssetDao:
 
         return asset
 
-    async def get_data_assets(self):
+    async def __add_algorithm_to_data(self, data):
 
-        cursor = await Asset.find({"type": "data"}, as_raw=True)    
-        return cursor.objects
+        algorithms = [await self.get_asset_by_did(algorithm["did"]) for algorithm in data["algorithms"]]
+        data["algorithms"] = algorithms
+     
+        return data
+
+    async def get_data_assets(self):        
+
+        cursor = await Asset.find({"type": "data"}, as_raw=True)        
+
+        result = [await self.__add_algorithm_to_data(data) for data in cursor.objects]
+        return result
 
     async def get_algorithm_assets(self):
 

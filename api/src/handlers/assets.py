@@ -19,9 +19,10 @@ class AssetsView(HTTPMethodView):
         metadata = jsonlib.loads(file.body)
         name = request.form.get("name")
         type = request.form.get("type")
+        description = request.form.get("description")
         did = app.ctx.ocean.publish_asset(private_key, name, metadata)
  
-        await app.ctx.assets_dao.insert_asset(did, user["_id"], type)
+        await app.ctx.assets_dao.insert_asset(did, user["_id"], name, type, description)
 
         return json({"did": did}, status=201)   
 
@@ -45,11 +46,12 @@ class AssetsWithDidView(HTTPMethodView):
         app = Sanic.get_app("C2DFlow")
         private_key = user["private_key"]
 
-        alg_did = request.json.get("alg_did", None)
+        alg_did = request.json.get("alg_did") if request.json and request.json.get("alg_did") else None
 
         if alg_did:
-            app.ctx.ocean.add_publisher_trusted_algorithm(private_key, did, alg_did)     
-            await app.ctx.assets_dao.add_trusted_algorithm_to_asset(did, alg_did)
+            app.ctx.ocean.add_publisher_trusted_algorithm(private_key, did, alg_did)    
+            alg_asset = await app.ctx.assets_dao.get_asset_by_did(alg_did) 
+            await app.ctx.assets_dao.add_trusted_algorithm_to_asset(did, alg_asset)
         else:
             data_asset = await app.ctx.assets_dao.get_asset_by_did(did)
             user_data = await app.ctx.users_dao.get_user_by_id(data_asset['publisher'])

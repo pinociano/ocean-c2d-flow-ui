@@ -23,6 +23,8 @@ ENV PATH $POETRY_HOME/bin:$VIRTUAL_ENV/bin:$PATH
 
 COPY --from=build /app /app
 COPY src src
-COPY start.sh ./
+COPY src/config/config.production.py src/config/config.py
 
-ENTRYPOINT ["./start.sh"]
+WORKDIR /app/src
+
+CMD ["poetry", "run", "python", "server.py"]

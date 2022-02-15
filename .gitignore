@@ -22,3 +22,7 @@ __pycache__/
 
 venv
 .vscode
+
+operator-engine
+operator-service
+postman

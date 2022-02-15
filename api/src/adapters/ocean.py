@@ -2,7 +2,9 @@ from logging import Logger
 from sanic import Sanic
 from sanic.log import logger
 
+from ocean_lib.config import Config
 from ocean_lib.example_config import ExampleConfig
+from adapters.config import OceanConfig
 from ocean_lib.ocean.ocean import Ocean
 from ocean_lib.web3_internal.wallet import Wallet
 
@@ -21,16 +23,26 @@ import pickle
 class OceanAdapter:
 
     def __init__(self):
-        self.config = ExampleConfig.get_config()
-        self.ocean = Ocean(self.config)
+        
         self.app = Sanic.get_app("C2DFlow")
+        self.ocean = self.__get_instance()
+
+    def __get_instance(self):
+        d = {
+            'network' : self.app.config.OCEAN_NETWORK_URL,
+            'metadataCacheUri' : self.app.config.METADATA_CACHE_URI,
+            'providerUri' : self.app.config.PROVIDER_URL
+        }
+        config = OceanConfig.get_config(d)
+        ocean = Ocean(config)
+        return ocean
 
     def __get_wallet(self, private_key):
         return Wallet(
             self.ocean.web3,
             private_key,
-            self.config.block_confirmations,
-            self.config.transaction_timeout,
+            self.ocean.config.block_confirmations,
+            self.ocean.config.transaction_timeout,
         )
 
     def __create_service_attributes(self, wallet):
@@ -145,6 +157,14 @@ class OceanAdapter:
         wallet = self.__get_wallet(private_key)
 
         result = self.ocean.compute.status(data_did, job_id, wallet)
+       
+        return result      
+    
+    def job_result_file(self, private_key, data_did, job_id):
+
+        wallet = self.__get_wallet(private_key)
+
+        result = self.ocean.compute.status(data_did, job_id, wallet)
 
         if result['status'] == 70:
             data = self.ocean.compute.result_file(data_did, job_id, 0, wallet)
@@ -154,4 +174,17 @@ class OceanAdapter:
 
             return lists
         else:
-            return result      
+            return None
+
+    def job_result(self, private_key, data_did, job_id):
+
+        wallet = self.__get_wallet(private_key)
+
+        result = self.ocean.compute.status(data_did, job_id, wallet)
+
+        if result['status'] == 70:
+            data = self.ocean.compute.result(data_did, job_id, wallet)
+
+            return data
+        else:
+            return None

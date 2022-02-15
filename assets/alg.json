@@ -1,0 +1,26 @@
+{
+  "main": {
+    "type": "algorithm",
+    "algorithm": {
+      "language": "python",
+      "format": "docker-image",
+      "version": "0.1",
+      "container": {
+        "entrypoint": "python $ALGO",
+        "image": "oceanprotocol/algo_dockers",
+        "tag": "python-branin"
+      }
+    },
+    "files": [
+      {
+        "url": "https://raw.githubusercontent.com/trentmc/branin/main/gpr.py",
+        "index": 0,
+        "contentType": "text/text"
+      }
+    ],
+    "name": "gpr",
+    "author": "Trent",
+    "license": "CC0",
+    "dateCreated": "2020-01-28T10:55:11Z"
+  }
+}
