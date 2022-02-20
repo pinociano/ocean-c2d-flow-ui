@@ -2,11 +2,6 @@ import json
 import os
 import pickle
 import sys
-
-import arff
-import matplotlib
-matplotlib.use('agg')
-from matplotlib import cm, pyplot
 import numpy
 from sklearn import gaussian_process
 import numpy as np
@@ -44,7 +39,8 @@ def run_prediction(local=False):
         print("Could not retrieve filename.")
         return
     
-    new_data=pd.read_csv('./ML/heart.csv') #import data csv file
+    print(filename)
+    new_data=pd.read_csv(filename) #import data csv file
     new_data.info() #information about our data type
 
     x=new_data[["sex","oldpeak","exang","ca","cp"]]
