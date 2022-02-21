@@ -2,7 +2,6 @@ import json
 import os
 import pickle
 import sys
-import numpy
 from sklearn import gaussian_process
 import numpy as np
 import pandas as pd
@@ -67,7 +66,8 @@ def run_prediction(local=False):
     print("Print prediction")
     print(pred)
     print("Save prediction")
-    f = open("/data/outputs/result", "w")
+    output = 'result' if local else "/data/outputs/result"
+    f = open(output, "w")
     f.write(str(pred))
     f.close()
 
